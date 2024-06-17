@@ -8,31 +8,28 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
-@SpringBootApplication
+@SpringBootApplication(
+)
 public class Date4uApplication {
 
-	// slf4j ist nur eine Fassade. Das konkrete Logging-Framework dahinter kann ausgetauscht werden.
-	private final Logger log = LoggerFactory.getLogger(getClass());
+    // slf4j ist nur eine Fassade. Das konkrete Logging-Framework dahinter kann ausgetauscht werden.
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
-	private String id = UUID.randomUUID().toString().substring(0, 10);
+    public Date4uApplication() {
+        log.debug("created Date4uApplication Bean");
+    }
 
-	public Date4uApplication() {
+    public static void main(String[] args) {
 
-	}
-
-
-	public static void main(String[] args) {
-
-		//1. Alternative die App zu starten. Kann dadurch vorkonfiguriert werden
+        //1. Alternative die App zu starten. Kann dadurch vorkonfiguriert werden
 //        SpringApplication app = new SpringApplication(Date4uApplication.class);
 //        app.setHeadless(false); // Bei GUI-Anwendungen muss die Anwendung im Headless-Mode gestartet werden
 //        app.setBannerMode(Banner.Mode.OFF); //Wird von den application.properties überschrieben
 //        app.setLogStartupInfo(false);
 //        app.run(args);
 
-		// 2. Alternative: Builder Pattern
+        // 2. Alternative: Builder Pattern
 //        ConfigurableApplicationContext context = new SpringApplicationBuilder(Date4uApplication.class)
 //                .headless(false)
 //                .bannerMode(Banner.Mode.OFF)
@@ -40,16 +37,17 @@ public class Date4uApplication {
 //                .run(args);
 
 
-		// Hier wird der ApplicationContext erzeugt.
-		ConfigurableApplicationContext context = SpringApplication.run(Date4uApplication.class, args);
+        // Hier wird der ApplicationContext erzeugt.
+        ConfigurableApplicationContext context = SpringApplication.run(Date4uApplication.class, args);
 
-		// Zugriff auf alle managed Beans. ConfigurableApplicationContext erbt von ListableBeanFactory
-		List<String> allBeanNames = Arrays.stream(context.getBeanDefinitionNames()).sorted().toList();
-		boolean containsBean = context.containsBean("date4uApplication");
-		Date4uApplication date4uApplication = (Date4uApplication) context.getBean("date4uApplication");
-		date4uApplication = context.getBean("date4uApplication", Date4uApplication.class);
-		date4uApplication = context.getBean(Date4uApplication.class);
-
-	}
+        // Zugriff auf alle managed Beans. ConfigurableApplicationContext erbt von ListableBeanFactory
+        List<String> allBeanNames = Arrays.stream(context.getBeanDefinitionNames()).sorted().toList();
+        boolean containsBean = context.containsBean("date4uApplication");
+        Date4uApplication date4uApplication = (Date4uApplication) context.getBean("date4uApplication");
+        date4uApplication = context.getBean("date4uApplication", Date4uApplication.class);
+        date4uApplication = context.getBean(Date4uApplication.class);
+        allBeanNames.forEach(System.out::println);
+        System.out.println("Size All Beans: " + allBeanNames.size());
+    }
 
 }
