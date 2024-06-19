@@ -1,0 +1,15 @@
+/* .img-logo {
+  width: 100px;
+  margin: 15px;
+}
+
+.nav-bar {
+  margin: 10px;
+} */
+
+.home-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
