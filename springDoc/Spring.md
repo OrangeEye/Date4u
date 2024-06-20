@@ -111,3 +111,71 @@ Programmstart viel Zeit, daher bei der Entwicklung Lazy Loading verwenden.
 
 Die Komponente wird im Context zwar aufgenommen, aber sie wird noch nicht voll initialisiert (Konstruktor werden nicht
 aufgerufen).
+
+## Security
+
+Ein angemeldeter User wird durch das Interface `Authentication` dargestellt. `SecurityContext`wird seinerseits dazu
+verwenden, die `Authentication` zu lesen und zu speichern. Die Klasse `SecuritiyContextHolder` gewährt über statische
+Methoden den Zugriff auf `SecurityContext.` (zB. `SecuritiyContextHolder.getContext()`). Dieser ist ThreadLocal, sodass
+er nur im selben Ausführungsthread zur Verfügung steht. Somit ist eine `Authentication` einem Thread zugeordnet.
+
+Es gibt verschiedene Implementierungen von `Authentication` zB. `UsernamePasswordAuthenticationToken`
+und `BearerTokenAuthentication`
+
+### Prüfen der Authentifizierung
+
+Ein `AuthenticationManager` kann prüfen, ob eine `Authentication` gültig ist. Aktuell gibt es den `ProviderManager`
+welcher `AuthenticationManager` implementiert und eine Liste von `AuthenticationProvider`besitzt. Einer
+der `AuthenticationProvider` übernimmt die Aufgabe der Authentifizierung, sofern er diesen Typ der `Authentication`
+authentifizieren kann.
+
+Einer der `AuthenticationProvider` ist der `DaoAuthenticationProvider`, welcher Benutzername und Passwort
+authentifizieren kann. Zur Prüfung verwendet er einen `UserDetailsService`mit einem `PasswordEncoder`.
+
+Der `UserDetailsService` kann mit der Methode `loadUserByUsername(u: String)` eine `UserDetails` zurückgeben, welches
+den User repräsentiert (sofern er vorhanden sind). `UserDetais` und `Authentication` haben ähnliche Daten,
+doch `UserDetails` dient nur zur Prüfung ob der User existiert bzw. authentifiziert werden kann. Der `Authentication`
+repräsentiert den angemeldeten User.
+
+Per default baut Spring Security über `UserDetailsServiceAutoConfiguration` eine `UserDetails` auf ( Genauer gesagt die
+Implementierung `InMemoryUserDetailsManager`, indem die User nur im Memory gespeichert werden). Dort gibt es einen User
+namens "User", welcher ein default Passwort bekommt (wird in der Konsole ausgegeben). Alternativ kann dieser über
+Properties gesetzt werden:
+`spring.security.user.name=MyUser`
+`spring.security.user.password=MyPasswort`
+Nur in der Entwicklung verwenden. Ansonsten zB den `JdbcUserDetailsManager` oder `LdapUserDetailsManager`
+
+Damit kann man sich bereits über den Browser anmelden und ein Cookie wird ausgetauscht. Über `/logout` kann man sich
+wieder abmelden.
+
+Um nun die User anzugeben, kann eine `UserDetailsService` Bean erzeugt werden, welche der `DaoAuthenticationProvider`
+dann verwendet um die vorhandenen User abzufragen.
+
+### PasswordEncoder
+
+Der `PasswordEncoder` wird von verschiedenen Klassen implementiert wie `NoOpPasswordEncoder`
+und `BCryptPasswordEncoder`. Dabei verwenden verschiedene Hash-Algorithmen verwendet. Der `DelegatingPasswordEncoder`
+delegiert die Prüfung des Passworts anhand des Präfixes an die entsprechende Klasse.
+
+- {noop} -> `NoOpPasswordEncoder`
+- {bcrypt} -> `BCryptPasswordEncoder`
+- {pbkdf2} -> `Pbkdf2PasswordEncoder`
+- {scrypt} -> `SCryptPasswordEncoder`
+- {sha256} -> `StandardPasswordEncoder`
+
+Wenn immer nur das Gleiche Encoding verwendet wird, kann durch eine `PasswordEncoder` Bean der Encoder direkt bestimmt
+werden. Dann darf allerdings der Präfix nicht mehr verwendet werden.
+
+### bcrypt
+
+bcrypt ist ein Hashverfahren, welches nicht umkehrbar ist und sicher gegen Bruteforce ist. Gehashte Passwörter beginnen
+immer mit einem `$` und der Kennung des Algorithmus. Bei `bcrypt`wird die Anzahl der Runden angegeben, die für eine
+Prüfung notwendig sind. Darauf folgt ein Zufallswert und das gehashte Passwort.
+
+`$2a$15$J.vEW0VdUPSSXDdEzi1sqOWbX2M/wd0sPAP/Y.7TL1FURMfTqM4Ii`
+
+# Typo Buch
+
+9.17.3 Das Interface heisst Authentication, nicht Authentification
+9.17.9 Abschnitt DelegatingPasswordEncoder -> Das Passwort ist doch "mk8suwi4kq" und nicht "1234"?
+9.17.9 Abschnitt bcrypt -> Absatz "Der Strings beginnen immer ..." Typo: Die Strings 

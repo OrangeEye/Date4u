@@ -6,9 +6,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import java.util.Arrays;
-import java.util.List;
-
 @SpringBootApplication(
 )
 public class Date4uApplication {
@@ -39,15 +36,15 @@ public class Date4uApplication {
 
         // Hier wird der ApplicationContext erzeugt.
         ConfigurableApplicationContext context = SpringApplication.run(Date4uApplication.class, args);
-
-        // Zugriff auf alle managed Beans. ConfigurableApplicationContext erbt von ListableBeanFactory
-        List<String> allBeanNames = Arrays.stream(context.getBeanDefinitionNames()).sorted().toList();
-        boolean containsBean = context.containsBean("date4uApplication");
-        Date4uApplication date4uApplication = (Date4uApplication) context.getBean("date4uApplication");
-        date4uApplication = context.getBean("date4uApplication", Date4uApplication.class);
-        date4uApplication = context.getBean(Date4uApplication.class);
-        allBeanNames.forEach(System.out::println);
-        System.out.println("Size All Beans: " + allBeanNames.size());
+//
+//        // Zugriff auf alle managed Beans. ConfigurableApplicationContext erbt von ListableBeanFactory
+//        List<String> allBeanNames = Arrays.stream(context.getBeanDefinitionNames()).sorted().toList();
+//        boolean containsBean = context.containsBean("date4uApplication");
+//        Date4uApplication date4uApplication = (Date4uApplication) context.getBean("date4uApplication");
+//        date4uApplication = context.getBean("date4uApplication", Date4uApplication.class);
+//        date4uApplication = context.getBean(Date4uApplication.class);
+//        allBeanNames.forEach(System.out::println);
+//        System.out.println("Size All Beans: " + allBeanNames.size());
     }
 
 }
