@@ -1,7 +1,12 @@
 import "./RegistrationForm.css";
 import { FaLock } from "react-icons/fa";
 import { CiMail } from "react-icons/ci";
-const LoginForm = () => {
+
+interface Props {
+  setShowLoginForm: (show: boolean) => void;
+}
+
+const RegistrationForm = ({ setShowLoginForm }: Props) => {
   return (
     <div className="login-container">
       <div>
@@ -21,7 +26,8 @@ const LoginForm = () => {
 
         <div className="register-link">
           <p>
-            Du hast schon einen Account ? <a href="#">Login</a>
+            Du hast schon einen Account ?{" "}
+            <a onClick={() => setShowLoginForm(true)}>Login</a>
           </p>
         </div>
       </div>
@@ -29,4 +35,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default RegistrationForm;

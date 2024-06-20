@@ -1,18 +1,16 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+
 import "./App.css";
 import Home from "./pages/Home";
-
-import myBackgroundImage from "./assets/images/background.jpg";
+import Profile from "./components/Profile/Profile";
 
 function App() {
-  const [count, setCount] = useState(0);
-  return (
-    <div>
-      <Home />
-    </div>
-  );
+  const [jwt, setJwt] = useState("");
+
+  return <div>
+    {jwt ? 
+    <Profile />
+     : <Home jwt={jwt} setJwt={setJwt} />}</div>;
 }
 
 export default App;
