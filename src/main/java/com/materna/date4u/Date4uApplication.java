@@ -1,13 +1,15 @@
 package com.materna.date4u;
 
+import com.materna.date4u.infastructure.security.RsaKeyProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ConfigurableApplicationContext;
 
-@SpringBootApplication(
-)
+@SpringBootApplication()
+@EnableConfigurationProperties(RsaKeyProperties.class)
 public class Date4uApplication {
 
     // slf4j ist nur eine Fassade. Das konkrete Logging-Framework dahinter kann ausgetauscht werden.

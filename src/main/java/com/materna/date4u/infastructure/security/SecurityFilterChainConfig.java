@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -32,11 +34,17 @@ public class SecurityFilterChainConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
+                .csrf(cs -> cs.disable()) //Disable Cross-Site Request Forgery (CSRF)
                 .authorizeHttpRequests(
                         request -> request.requestMatchers("/tip").permitAll().anyRequest().authenticated()
                 )
-                .formLogin(Customizer.withDefaults())
+                // Damit wird ein JwtDecoder benötigt. Entweder eine Bean oder ein Verweis auf einen Resource Server
+                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
                 .httpBasic(Customizer.withDefaults())
+//                .formLogin(Customizer.withDefaults())
                 .cors(Customizer.withDefaults())
                 .build();
     }

@@ -12,12 +12,15 @@ public class UserDetailsServiceConfig {
 
     @Bean
     UserDetailsService myUserDetailsService(UnicornRepository repository) {
-        return (String email) -> repository.findByEmail(email)
-                .map(unicorn -> User.builder()
-                        .username(unicorn.getEmail())
-                        .password(unicorn.getPassword())
-                        .build())
-                .orElseThrow(() -> new UsernameNotFoundException("user konnte nicht gefunden werden: " + email));
+        return (String username) -> {
+            System.out.println("Checking Username: " + username);
+            return repository.findByEmail(username)
+                    .map(unicorn -> User.builder()
+                            .username(unicorn.getEmail())
+                            .password(unicorn.getPassword())
+                            .build())
+                    .orElseThrow(() -> new UsernameNotFoundException("user konnte nicht gefunden werden: " + username));
+        };
 
     }
 }

@@ -174,6 +174,19 @@ Prüfung notwendig sind. Darauf folgt ein Zufallswert und das gehashte Passwort.
 
 `$2a$15$J.vEW0VdUPSSXDdEzi1sqOWbX2M/wd0sPAP/Y.7TL1FURMfTqM4Ii`
 
+## JWT
+
+### RSA Public & Private Key
+
+create rsa key pair
+`openssl genrsa -out keypair.pem 2048`
+
+extract public key
+`openssl rsa -in keypair.pem -pubout -out public.pem`
+
+create private key in PKCS#8 format
+`openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in keypair.pem -out private.pem`
+
 # Typo Buch
 
 9.17.3 Das Interface heisst Authentication, nicht Authentification
