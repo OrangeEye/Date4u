@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class AuthController {
+public class AuthRestController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AuthController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AuthRestController.class);
 
     private final TokenService tokenService;
 
-    public AuthController(TokenService tokenService) {
+    public AuthRestController(TokenService tokenService) {
         this.tokenService = tokenService;
     }
 

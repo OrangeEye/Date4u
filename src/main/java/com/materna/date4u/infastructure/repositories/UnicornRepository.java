@@ -1,6 +1,6 @@
 package com.materna.date4u.infastructure.repositories;
 
-import com.materna.date4u.infastructure.entities.Unicorn;
+import com.materna.date4u.core.entities.Unicorn;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
@@ -14,4 +14,7 @@ public interface UnicornRepository extends CrudRepository<Unicorn, Long> {
         }
         return Optional.empty();
     }
+
+    // Optional<Unicorn> findUnicornByEmail(String email)
 }
+
