@@ -1,4 +1,3 @@
-import "./RegistrationForm.css";
 import { FaLock } from "react-icons/fa";
 import { CiMail } from "react-icons/ci";
 
@@ -8,7 +7,7 @@ interface Props {
 
 const RegistrationForm = ({ setShowLoginForm }: Props) => {
   return (
-    <div className="login-container">
+    <div className="content-container">
       <div>
         <h1>Registrierung</h1>
         <div className="input-box">

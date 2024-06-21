@@ -1,4 +1,3 @@
-import "./LoginForm.css";
 import { FaLock } from "react-icons/fa";
 import { CiMail } from "react-icons/ci";
 import { useState } from "react";
@@ -16,17 +15,9 @@ const LoginForm = ({ jwt, setJwt, setShowLoginForm }: Props) => {
   const handleLogin = () => {
     const xhr = new XMLHttpRequest();
 
-    // TEST
-    if (jwt) {
-      console.log("JWT NOT EMPTY");
-    } else {
-      console.log("JWT EMPTY");
-    }
-
     xhr.addEventListener("readystatechange", function () {
       if (this.readyState === this.DONE) {
         setJwt(this.responseText);
-        console.log("Login Successful");
       }
     });
 
@@ -39,33 +30,37 @@ const LoginForm = ({ jwt, setJwt, setShowLoginForm }: Props) => {
   };
 
   const getStats = () => {
-    const data = null;
-
     const xhr = new XMLHttpRequest();
-    // xhr.withCredentials = true;
 
     xhr.addEventListener("readystatechange", function () {
       if (this.readyState === this.DONE) {
         console.log(this.responseText);
-        console.log("DONE");
       }
     });
 
     xhr.open("GET", "http://localhost:8080/stats");
     xhr.setRequestHeader("Authorization", "Bearer " + jwt);
-    xhr.send(data);
+    xhr.send();
   };
 
+  function handleChangeEmail(e) {
+    setEmail(e.target.value);
+  }
+
+  function handleChangePassword(e) {
+    setPassword(e.target.value);
+  }
+
   return (
-    <div className="login-container">
+    <div className="content-container">
       <div>
         <h1>Login</h1>
         <div className="input-box">
-          <input type="text" placeholder="Email" />
+          <input type="text" placeholder="Email" onChange={handleChangeEmail} value={email} />
           <CiMail className="icon" />
         </div>
         <div className="input-box">
-          <input type="password" placeholder="Passwort" />
+          <input type="password" placeholder="Passwort" onChange={handleChangePassword} value={password} />
           <FaLock className="icon" />
         </div>
 

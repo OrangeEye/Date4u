@@ -7,10 +7,11 @@ import Profile from "./components/Profile/Profile";
 function App() {
   const [jwt, setJwt] = useState("");
 
-  return <div>
-    {jwt ? 
-    <Profile />
-     : <Home jwt={jwt} setJwt={setJwt} />}</div>;
+  return (
+    <div className="home-container">
+      {jwt ? <Profile jwt={jwt}  /> : <Home jwt={jwt} setJwt={setJwt} />}
+    </div>
+  );
 }
 
 export default App;
